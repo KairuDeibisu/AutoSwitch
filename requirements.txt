@@ -1,0 +1,2 @@
+netmiko==3.3.2
+pycparser==2.20
