@@ -4,6 +4,7 @@ This is a comand line utility to allow the user to configure a cisco router or s
 
 from autoswitch_core.device import Device
 import os
+import pprint
 
 
 def ssh(args):
@@ -20,22 +21,21 @@ def telnet(args):
     pass
 
 
-def serial(args):
+def serial(args: dict):
     """
     Connect to device with serial
     """
 
-    if not os.path.isfile(args.filepath):
-        raise FileNotFoundError(args.filepath)
-
     device_config = {
         "device_type": "cisco_ios_serial",
-        "username": args.username,
-        "password": args.password,
-        "secret": args.secret,
-        "serial_settings": {"port": args.port,
-                            "baudrate": args.baudrate}
+        "username": args["username"],
+        "password": args["password"],
+        "secret": args["secret"],
+        "serial_settings": {"port": args["port"],
+                            "baudrate": args["baudrate"]}
     }
 
-    with Device(**device_config) as device:
-        device.load(args.filepath)
+    pprint.pprint(device_config)
+
+    # with Device(**device_config) as device:
+    #     device.load(args.path)
