@@ -1,5 +1,5 @@
 """
-This is a comand line utility to allow the user to configure a cisco router or switch
+Networking Functions
 """
 
 from autoswitch_core.device import Device
@@ -7,23 +7,23 @@ import os
 import pprint
 
 
-def ssh(args):
+def load_with_ssh(args):
     """
-    Connect to device with ssh
-    """
-    pass
-
-
-def telnet(args):
-    """
-    Connect to device with telnet
+    Configures device with ssh
     """
     pass
 
 
-def serial(args: dict):
+def load_with_telnet(args):
     """
-    Connect to device with serial
+    Configures device with telnet
+    """
+    pass
+
+
+def load_with_serial(args: dict):
+    """
+    Configures device with serial
     """
 
     device_config = {
@@ -35,7 +35,5 @@ def serial(args: dict):
                             "baudrate": args["baudrate"]}
     }
 
-    pprint.pprint(device_config)
-
-    # with Device(**device_config) as device:
-    #     device.load(args.path)
+    with Device(**device_config) as device:
+        device.load(args["load"])
