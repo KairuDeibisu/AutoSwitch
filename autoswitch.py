@@ -8,7 +8,6 @@ from autoswitch_core.utils import *
 from autoswitch_core.network import *
 from autoswitch_core.type import *
 
-from serial.tools import list_ports
 import argparse
 
 
@@ -41,46 +40,40 @@ def main(argv=None) -> int:
     """
     Handle Command line Arguments
     """
-    parser = argparse.ArgumentParser(description="Configure Cisco Device")
+    parser = argparse.ArgumentParser(description="Configure Cisco Device",
+                                     epilog="This command-line tool helps configure cisco devices with text files.")
 
     subparsers = parser.add_subparsers(
         dest="menu", description="The method used to conected to network device")
 
-    # SSH Menu
-    ssh_parser = subparsers.add_parser(
+    ssh_menu = subparsers.add_parser(
         "ssh",  help="Connect to device using ssh")
-    ssh_parser.set_defaults(load_func=load_with_ssh)
+    ssh_menu.set_defaults(load_func=load_with_ssh)
 
-    # Telnet Menu
-    telnet_parser = subparsers.add_parser(
+    telnet_menu = subparsers.add_parser(
         "telnet", help="Connect to device using telnet")
-    telnet_parser.set_defaults(load_func=load_with_telnet)
+    telnet_menu.set_defaults(load_func=load_with_telnet)
 
-    # Serial Menu
-    serial_parser = subparsers.add_parser(
+    serial_menu = subparsers.add_parser(
         "serial", help="Connect to device using serial cable")
-    serial_parser.set_defaults(load_func=load_with_serial)
+    serial_menu.set_defaults(load_func=load_with_serial)
 
-    serial_auth_group = get_auth_group(serial_parser)
+    serial_auth_group = get_auth_group(serial_menu)
 
-    serial_parser.add_argument(
+    serial_menu.add_argument(
         "--load", help="Load configuration file to device", default=None, type=path)
 
-    # Tools
-    serial_util_group = serial_parser.add_argument_group("Tools")
+    serial_util_group = serial_menu.add_argument_group("Tools")
     serial_util_group.add_argument(
         "--list-port", help="lists avalible serial ports", action="store_true")
 
-    # Serial Specific Options
-    serial_parser.add_argument(
-        "--port", type=comport, help="COMPORT name", default=list_ports.comports()[0].device)
+    serial_menu.add_argument(
+        "--port", type=comport, help="COMPORT name", default=get_default_serial_port)
 
-    serial_parser.add_argument(
+    serial_menu.add_argument(
         "--baudrate", type=int, default=9600, help="Speed bytes are transferred over serial")
 
     args = parser.parse_args(argv)
-
-    # Handle args
 
     if args.menu == None:
 
