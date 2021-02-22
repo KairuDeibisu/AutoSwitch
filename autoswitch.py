@@ -68,7 +68,7 @@ def main(argv=None) -> int:
         "--list-port", help="lists avalible serial ports", action="store_true")
 
     serial_menu.add_argument(
-        "--port", type=comport, help="COMPORT name", default=get_default_serial_port)
+        "--port", type=comport, help="COMPORT name", default=get_default_serial_port())
 
     serial_menu.add_argument(
         "--baudrate", type=int, default=9600, help="Speed bytes are transferred over serial")
