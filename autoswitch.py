@@ -1,9 +1,8 @@
 """
 This is a comand line utility to allow the user to configure a cisco router or switch
-Serves an entrypoint, parses user input, and handles userinput
+Serves an entrypoint, parses user input, and handles user input
 
 """
-
 
 from autoswitch_core.utils import *
 from autoswitch_core.network import *
