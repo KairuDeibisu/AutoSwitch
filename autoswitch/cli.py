@@ -4,9 +4,9 @@ Serves an entrypoint, parses user input, and handles user input
 
 """
 
-from autoswitch_core.utils import *
-from autoswitch_core.network import *
-from autoswitch_core.type import *
+from network import *
+from exceptions import *
+from utils import *
 
 import argparse
 
@@ -36,11 +36,9 @@ def input_handler(args):
         list_serial_ports()
 
 
-def main(argv=None) -> int:
-    """
-    Handle Command line Arguments
-    """
-    parser = argparse.ArgumentParser(description="Configure Cisco Device",
+def get_args(argv) -> dict:
+
+    parser = argparse.ArgumentParser(prog="autoswitch", description="Configure Cisco Device",
                                      epilog="This command-line tool helps configure cisco devices with text files.")
 
     subparsers = parser.add_subparsers(
@@ -76,11 +74,20 @@ def main(argv=None) -> int:
     args = parser.parse_args(argv)
 
     if args.menu == None:
-
         parser.print_help()
-        return 1
+        exit(1)
 
-    input_handler(vars(args))
+    return vars(args)
+
+
+def main(argv=None) -> int:
+    """
+    Handle Command line Arguments
+    """
+
+    args = get_args(argv)
+
+    input_handler(args)
 
     return 0
 
