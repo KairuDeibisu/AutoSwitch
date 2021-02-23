@@ -7,4 +7,8 @@ def list_serial_ports():
 
 
 def get_default_serial_port() -> str:
-    return list_ports.comports()[0].device
+    try:
+        return list_ports.comports()[0].device
+    except IndexError:
+        # No comport
+        return ""

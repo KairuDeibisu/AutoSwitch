@@ -1,14 +1,11 @@
-from setuptools import setup
+import setuptools
 
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
 
-setup(
-    name="autoswitch",
-    version="1.0",
-    description="Configure Cisco devices",
-    author="Kyle Davis",
-    author_email="contact@kyledavis.dev",
-    url="https://kyledavis.dev",
-    packages=["autoswitch"],
+setuptools.setup(
+    version="0.0.1",
+    long_description=long_description,
     install_requires=[
         "netmiko"
     ]

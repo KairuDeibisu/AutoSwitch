@@ -1,5 +1,5 @@
 import unittest
-import cli
+from autoswitch import cli
 
 
 class TestParser(unittest.TestCase):

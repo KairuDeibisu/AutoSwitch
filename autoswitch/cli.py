@@ -4,9 +4,9 @@ Serves an entrypoint, parses user input, and handles user input
 
 """
 
-from network import *
-from exceptions import *
-from utils import *
+from autoswitch.network import *
+from autoswitch.exceptions import *
+from autoswitch.utils import *
 
 import argparse
 
@@ -29,10 +29,10 @@ def input_handler(args):
     Handles user input
     """
 
-    if args["load"] != None:
+    if args.get("load") != None:
         args["load_func"](args)
 
-    if args["list_port"]:
+    if args.get("list_port"):
         list_serial_ports()
 
 
@@ -42,7 +42,7 @@ def get_args(argv) -> dict:
                                      epilog="This command-line tool helps configure cisco devices with text files.")
 
     subparsers = parser.add_subparsers(
-        dest="menu", description="The method used to conected to network device")
+        dest="menu", description="The method used to connect to network device")
 
     ssh_menu = subparsers.add_parser(
         "ssh",  help="Connect to device using ssh")
@@ -58,15 +58,17 @@ def get_args(argv) -> dict:
 
     serial_auth_group = get_auth_group(serial_menu)
 
-    serial_menu.add_argument(
-        "--load", help="Load configuration file to device", default=None, type=path)
-
     serial_util_group = serial_menu.add_argument_group("Tools")
     serial_util_group.add_argument(
         "--list-port", help="lists avalible serial ports", action="store_true")
 
-    serial_menu.add_argument(
-        "--port", type=comport, help="COMPORT name", default=get_default_serial_port())
+    default_serial_port = get_default_serial_port()
+
+    if default_serial_port != "":
+        serial_menu.add_argument(
+            "--load", help="Load configuration file to device", default=None, type=path)
+        serial_menu.add_argument(
+            "--port", type=comport, help="COMPORT name", default=default_serial_port)
 
     serial_menu.add_argument(
         "--baudrate", type=int, default=9600, help="Speed bytes are transferred over serial")
