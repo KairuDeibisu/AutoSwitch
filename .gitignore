@@ -1,4 +1,8 @@
 env/
-.vscode/
+.vs/
 *.pyc
 __pycache__
+test.txt
+dist/
+build/
+*.egg-info
