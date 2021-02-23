@@ -30,10 +30,18 @@ def input_handler(args):
     """
 
     if args.get("load") != None:
-        args["load_func"](args)
+        load_file(args)
 
     if args.get("list_port"):
         list_serial_ports()
+
+
+def load_file(args):
+    if args.get("port") != None:
+        args["load_func"](args)
+    else:
+        print("No Port Selected!")
+        exit(1)
 
 
 def get_args(argv) -> dict:
@@ -60,15 +68,12 @@ def get_args(argv) -> dict:
 
     serial_util_group = serial_menu.add_argument_group("Tools")
     serial_util_group.add_argument(
-        "--list-port", help="lists avalible serial ports", action="store_true")
+        "--list-port", help="lists available serial ports", action="store_true")
 
-    default_serial_port = get_default_serial_port()
-
-    if default_serial_port != "":
-        serial_menu.add_argument(
-            "--load", help="Load configuration file to device", default=None, type=path)
-        serial_menu.add_argument(
-            "--port", type=comport, help="COMPORT name", default=default_serial_port)
+    serial_menu.add_argument(
+        "--load", help="Load configuration file to device", default=None, type=argparse.FileType('r'))
+    serial_menu.add_argument(
+        "--port", type=comport, help="COMPORT name")
 
     serial_menu.add_argument(
         "--baudrate", type=int, default=9600, help="Speed bytes are transferred over serial")
